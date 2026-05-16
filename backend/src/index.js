@@ -40,10 +40,7 @@ const app = express();
     console.log('Database seeded with default users and tasks');
   }
 
-  app.use(cors({
-    origin: process.env.FRONTEND_URL || '*',
-    credentials: true
-  }));
+  app.use(cors({ origin: true, credentials: true }));
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
