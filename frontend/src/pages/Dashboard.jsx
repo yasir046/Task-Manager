@@ -20,11 +20,12 @@ export default function Dashboard() {
       api.get('/dashboard/overdue-by-team')
     ])
       .then(([t, s, u, o]) => {
-        setByTeam(t.data)
-        setByStatus(s.data)
-        setPerUser(u.data)
-        setOverdue(o.data)
+        setByTeam(Array.isArray(t.data) ? t.data : []);
+        setByStatus(Array.isArray(s.data) ? s.data : []);
+        setPerUser(Array.isArray(u.data) ? u.data : []);
+        setOverdue(Array.isArray(o.data) ? o.data : []);
       })
+      .catch(() => {})
       .finally(() => setLoading(false))
   }, [])
 

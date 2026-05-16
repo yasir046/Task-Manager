@@ -28,13 +28,14 @@ export default function AdminTasks() {
     try {
       const params = Object.fromEntries(Object.entries(filtersRef.current).filter(([, v]) => v))
       const res = await api.get('/tasks', { params })
+      const data = Array.isArray(res.data) ? res.data : []
       setTasks(prev => {
         const prevIds = JSON.stringify(prev.map(t => t._id + t.status + t.assignedTo?._id))
-        const nextIds = JSON.stringify(res.data.map(t => t._id + t.status + t.assignedTo?._id))
+        const nextIds = JSON.stringify(data.map(t => t._id + t.status + t.assignedTo?._id))
         if (prevIds !== nextIds && prev.length > 0) {
           setLastUpdated(new Date())
         }
-        return res.data
+        return data
       })
     } catch {
       if (!silent) toast.error('Failed to load tasks')

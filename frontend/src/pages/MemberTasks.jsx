@@ -20,18 +20,19 @@ export default function MemberTasks() {
   const fetchTasks = useCallback(async (silent = false) => {
     try {
       const res = await api.get('/tasks')
+      const data = Array.isArray(res.data) ? res.data : []
       setTasks(prev => {
         const prevIds = JSON.stringify(prev.map(t => t._id + t.status))
-        const nextIds = JSON.stringify(res.data.map(t => t._id + t.status))
+        const nextIds = JSON.stringify(data.map(t => t._id + t.status))
         if (prevIds !== nextIds && prev.length > 0) {
           setLastUpdated(new Date())
-          if (res.data.length > prev.length) {
+          if (data.length > prev.length) {
             setNewAssignment(true)
             toast('New task assigned!', { icon: '📋', style: { background: '#2563EB', color: '#fff' } })
             setTimeout(() => setNewAssignment(false), 4000)
           }
         }
-        return res.data
+        return data
       })
     } catch {
       if (!silent) toast.error('Failed to load tasks')
